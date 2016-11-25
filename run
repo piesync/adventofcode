@@ -1,0 +1,20 @@
+#!/usr/bin/env sh
+
+dir=$(dirname "$1")
+filename=$(basename "$1")
+extension="${filename##*.}"
+solution="${filename%.*}"
+
+case $extension in
+  pl) docker="swipl/swipl swipl -q -f /$filename -t main" ;;
+  rb) docker="ruby:2.3.3-alpine ruby /$filename" ;;
+  hs) docker="haskell:8.0.1 runhaskell /$filename" ;;
+esac
+
+command="docker run -i --rm -v `pwd`/$1:/$filename $docker"
+
+if [ -t 0 ]; then
+  eval "$command < $dir/input"
+else
+  eval "$command < /dev/stdin"
+fi
