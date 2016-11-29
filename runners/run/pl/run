@@ -1,0 +1,3 @@
+#!/usr/bin/env sh
+
+swipl -q -f /runner/run.pl -t main ${1:-a}

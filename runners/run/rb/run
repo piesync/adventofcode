@@ -1,0 +1,7 @@
+#!/usr/bin/env ruby
+
+require_relative '/solution.rb'
+
+part = (ARGV[0] || :a).to_sym
+
+puts send(part, $stdin.read)

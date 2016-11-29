@@ -1,0 +1,14 @@
+#!/usr/bin/env sh
+
+src=$(cat /solution.hs)
+part=${1:-a}
+
+cat <<EOF > /exec.hs
+$src
+
+main = do
+  i <- getContents
+  print $ $part i
+EOF
+
+runghc /exec.hs

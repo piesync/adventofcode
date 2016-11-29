@@ -1,0 +1,30 @@
+#!/usr/bin/env sh
+
+path=$1
+shift
+runner=$1
+shift
+
+dir=$(dirname "$path")
+filename=$(basename "$path")
+extension="${filename##*.}"
+solution="${filename%.*}"
+
+case $extension in
+  pl) image="swipl/swipl" ;;
+  rb) image="ruby:2.3.3" ;;
+  hs) image="haskell:8.0.1" ;;
+esac
+
+program=$(basename $0)
+if [ $program = "aocint" ]; then
+  docker run --name aoc -it --rm -w "/root" -v `pwd`/$path:/root/solution.$extension -v `pwd`/$dir/inputs:/root/inputs $image bash
+else
+  command="docker run --name aoc -i --rm -v `pwd`/$path:/solution.$extension -v `pwd`/runners/$runner/$extension:/runner $image /runner/run $@"
+
+  if [ -t 0 ]; then
+    eval "$command < $dir/inputs/$solution"
+  else
+    eval "$command < /dev/stdin"
+  fi
+fi

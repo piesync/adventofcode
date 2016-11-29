@@ -1,0 +1,20 @@
+#!/usr/bin/env ruby
+# example: benchmark a 10
+
+require_relative '/solution.rb'
+
+elapsed = 0
+iterations = 0
+input = $stdin.read
+
+while elapsed < ARGV[1].to_i*1000
+  start = Time.now
+
+  send(ARGV[0].to_sym, input)
+
+  stop = Time.now
+  iterations += 1
+  elapsed += stop.to_f*1000 - start.to_f*1000
+end
+
+puts iterations
