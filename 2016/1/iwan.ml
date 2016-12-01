@@ -33,7 +33,11 @@ end
 module Instruction = struct
   type t = Instruction of Turn.t * int
 
-  let from_string s = Instruction (Turn.from_char s.[0], int_of_string @@ Char.escaped s.[1])
+  let from_string s =
+    let len = String.length s in
+    let turn = Turn.from_char s.[0] in
+    let count = int_of_string @@ String.sub s 1 (len - 1) in
+    Instruction (turn, count)
 end
 
 module Coordinate = struct
@@ -47,7 +51,7 @@ module Coordinate = struct
     | West -> {coord with x = coord.x - count}
     | East -> {coord with x = coord.x + count}
 
-  let to_blocks {x;y} = abs (x + y)
+  let to_blocks {x;y} = abs x + abs y
 end
 
 type location = Location of Coordinate.t * direction
