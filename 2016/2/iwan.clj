@@ -41,9 +41,9 @@
     (loop [position start
            rules rules
            res []]
-      (let [_ (println res)] (if-not (empty? rules)
-                (let [next (walk position (first rules))]
-                  (recur next (into [] (rest rules)) (conj res next)))
-                (->> res
-                     (map #(get-in plan %))
-                     (apply str)))))))
+      (if-not (empty? rules)
+        (let [next (walk position (first rules))]
+          (recur next (into [] (rest rules)) (conj res next)))
+        (->> res
+             (map #(get-in plan %))
+             (apply str))))))
